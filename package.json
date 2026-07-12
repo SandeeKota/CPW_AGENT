@@ -4,7 +4,7 @@
   "description": "CPW AI Agent Backend - LangChain + LangGraph + TypeScript",
   "main": "dist/index.js",
   "scripts": {
-    "start": "bun run src/index.ts",
+    "start": "bun dist/index.js",
     "dev": "bun --hot run src/index.ts",
     "debug": "bun --inspect-wait --hot run src/index.ts",
     "build": "bun build src/index.ts --outdir dist --sourcemap --target=node",
