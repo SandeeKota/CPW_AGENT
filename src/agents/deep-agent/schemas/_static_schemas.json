@@ -1,0 +1,1139 @@
+{
+  "collections": {
+    "projects": {
+      "name": "projects",
+      "schema": {
+        "$ref": "#/definitions/projects",
+        "definitions": {
+          "projects": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "minLength": 20
+              },
+              "bannerImageUrl": {
+                "type": "string",
+                "format": "uri"
+              },
+              "schoolName": {
+                "type": "string"
+              },
+              "amountRaised": {
+                "default": 0,
+                "type": "number",
+                "minimum": 0
+              },
+              "totalProjectCost": {
+                "type": "number",
+                "minimum": 0
+              },
+              "address": {
+                "type": "object",
+                "properties": {
+                  "villageName": {
+                    "type": "string"
+                  },
+                  "mandalName": {
+                    "type": "string"
+                  },
+                  "districtName": {
+                    "type": "string"
+                  },
+                  "stateName": {
+                    "type": "string"
+                  },
+                  "postalCode": {
+                    "type": "string"
+                  },
+                  "countryName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "villageName",
+                  "mandalName",
+                  "districtName",
+                  "stateName",
+                  "countryName"
+                ],
+                "additionalProperties": false
+              },
+              "locationUrl": {
+                "type": "string",
+                "format": "uri"
+              },
+              "studentCount": {
+                "type": "object",
+                "properties": {
+                  "boys": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "girls": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "total": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "total"
+                ],
+                "additionalProperties": false
+              },
+              "numberOfClasses": {
+                "type": "number",
+                "minimum": 0
+              },
+              "academicYear": {
+                "type": "string"
+              },
+              "waterQualityData": {
+                "type": "object",
+                "properties": {
+                  "collectionDate": {
+                    "type": "string"
+                  },
+                  "phLevel": {
+                    "type": "string"
+                  },
+                  "totalDissolvedSolids": {
+                    "type": "string"
+                  },
+                  "turbidityLevel": {
+                    "type": "string"
+                  },
+                  "totalHardness": {
+                    "type": "string"
+                  },
+                  "calciumContent": {
+                    "type": "string"
+                  },
+                  "magnesiumContent": {
+                    "type": "string"
+                  },
+                  "sodiumContent": {
+                    "type": "string"
+                  },
+                  "potassiumContent": {
+                    "type": "string"
+                  },
+                  "chlorideLevel": {
+                    "type": "string"
+                  },
+                  "fluorideLevel": {
+                    "type": "string"
+                  },
+                  "arsenicLevel": {
+                    "type": "string"
+                  },
+                  "ironContent": {
+                    "type": "string"
+                  },
+                  "zincContent": {
+                    "type": "string"
+                  },
+                  "manganeseContent": {
+                    "type": "string"
+                  },
+                  "totalColiformBacteria": {
+                    "type": "string",
+                    "enum": [
+                      "Present",
+                      "Absent"
+                    ]
+                  }
+                },
+                "required": [
+                  "phLevel",
+                  "totalDissolvedSolids",
+                  "turbidityLevel",
+                  "totalHardness",
+                  "calciumContent",
+                  "magnesiumContent",
+                  "sodiumContent",
+                  "potassiumContent",
+                  "chlorideLevel",
+                  "fluorideLevel",
+                  "arsenicLevel",
+                  "ironContent",
+                  "zincContent",
+                  "manganeseContent",
+                  "totalColiformBacteria"
+                ],
+                "additionalProperties": false
+              },
+              "waterQualityPercentages": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              },
+              "udiseCode": {
+                "type": "string"
+              },
+              "projectStartDate": {
+                "type": "string"
+              },
+              "projectEndDate": {
+                "type": "string"
+              },
+              "createdByUserId": {
+                "type": "string"
+              },
+              "projectStatus": {
+                "default": "active",
+                "type": "string",
+                "enum": [
+                  "active",
+                  "completed",
+                  "ongoing",
+                  "cancelled"
+                ]
+              },
+              "isPaymentRequired": {
+                "default": false,
+                "type": "boolean"
+              },
+              "curency_type": {
+                "default": "INR",
+                "type": "string"
+              },
+              "convertedAmounts": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "type": "number"
+                }
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              },
+              "location": {
+                "type": "object",
+                "properties": {
+                  "lat": {
+                    "type": "number"
+                  },
+                  "long": {
+                    "type": "number"
+                  },
+                  "state": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "stateLocation": {
+                "type": "object",
+                "properties": {
+                  "lat": {
+                    "type": "number"
+                  },
+                  "long": {
+                    "type": "number"
+                  },
+                  "state": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "state": {
+                "type": "string"
+              },
+              "State": {
+                "type": "string"
+              },
+              "user_copy": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {}
+              },
+              "center_type": {
+                "default": "school",
+                "type": "string",
+                "enum": [
+                  "village",
+                  "school"
+                ]
+              },
+              "population": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "male": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "female": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "children": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "adults": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "description",
+              "bannerImageUrl",
+              "totalProjectCost",
+              "address",
+              "locationUrl",
+              "waterQualityData",
+              "projectStartDate",
+              "createdByUserId",
+              "projectStatus",
+              "isPaymentRequired",
+              "curency_type",
+              "createdAt",
+              "center_type"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "pinecone": {
+        "isVectorized": true,
+        "namespace": "projects",
+        "vectorizedFields": [
+          "title",
+          "description",
+          "schoolName",
+          "address.villageName",
+          "address.mandalName"
+        ]
+      },
+      "relationships": {
+        "createdByUserId": {
+          "foreignField": "createdByUserId",
+          "foreignCollection": "users",
+          "type": "many-to-one"
+        }
+      }
+    },
+    "donations": {
+      "name": "donations",
+      "schema": {
+        "$ref": "#/definitions/donations",
+        "definitions": {
+          "donations": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "project_id": {
+                "type": "string"
+              },
+              "campaign_id": {
+                "type": "string"
+              },
+              "donationType": {
+                "type": "string",
+                "enum": [
+                  "oneTime",
+                  "monthly"
+                ]
+              },
+              "amount": {
+                "type": "number",
+                "minimum": 1
+              },
+              "dedicated_name": {
+                "type": "string"
+              },
+              "dedicated_message": {
+                "type": "string"
+              },
+              "userDetails": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                  },
+                  "phone": {},
+                  "dial_code": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "houseNumber": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "state": {
+                        "type": "string"
+                      },
+                      "postal_code": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "phone",
+                  "first_name",
+                  "last_name"
+                ],
+                "additionalProperties": false
+              },
+              "tax_exemption_certificate_required": {
+                "type": "boolean"
+              },
+              "tax_exemption_details": {
+                "type": "object",
+                "properties": {
+                  "name_as_per_pan": {
+                    "type": "string"
+                  },
+                  "pan": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "address_line": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "state": {
+                        "type": "string"
+                      },
+                      "postal_code": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              },
+              "pan_verification_response": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean"
+                  },
+                  "verified": {
+                    "type": "boolean"
+                  },
+                  "verification": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  },
+                  "traceId": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "aadhaar_seeding_status": {
+                        "type": "string"
+                      },
+                      "category": {
+                        "type": "string"
+                      },
+                      "full_name": {
+                        "type": "string"
+                      },
+                      "first_name": {
+                        "type": "string"
+                      },
+                      "middle_name": {
+                        "type": "string"
+                      },
+                      "last_name": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": {}
+                  }
+                },
+                "required": [
+                  "success"
+                ],
+                "additionalProperties": {}
+              },
+              "createdBy": {
+                "type": "string"
+              },
+              "recive_updates": {
+                "default": false,
+                "type": "boolean"
+              },
+              "createdAt": {
+                "type": "string",
+                "minLength": 1
+              },
+              "paymentDetails": {
+                "type": "object",
+                "properties": {
+                  "provider": {
+                    "type": "string",
+                    "enum": [
+                      "stripe",
+                      "razorpay"
+                    ]
+                  },
+                  "stripe_payment_intent_id": {
+                    "type": "string"
+                  },
+                  "razorpay_payment_id": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "success",
+                      "failed",
+                      "refunded",
+                      "pending"
+                    ]
+                  },
+                  "paidAt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "provider",
+                  "status"
+                ],
+                "additionalProperties": false
+              },
+              "oringinalAmount": {
+                "default": 0,
+                "type": "number"
+              },
+              "currency": {
+                "default": "INR",
+                "type": "string"
+              },
+              "paymentMethod": {
+                "type": "string"
+              },
+              "tax": {
+                "type": "string"
+              },
+              "fee": {
+                "type": "string"
+              },
+              "transFee": {
+                "default": false,
+                "type": "boolean"
+              },
+              "payment_recipt": {
+                "type": "string"
+              },
+              "donation_recipt": {
+                "type": "string"
+              },
+              "certificate80G_recipt": {
+                "type": "string"
+              },
+              "convertedAmounts": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              },
+              "coment": {
+                "type": "string"
+              },
+              "subscription_id": {
+                "type": "string"
+              },
+              "subscription_status": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "donationType",
+              "amount",
+              "userDetails",
+              "recive_updates",
+              "createdAt",
+              "paymentDetails"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "pinecone": {
+        "isVectorized": false
+      },
+      "relationships": {
+        "projectId": {
+          "foreignField": "projectId",
+          "foreignCollection": "projects",
+          "type": "many-to-one"
+        },
+        "userId": {
+          "foreignField": "userId",
+          "foreignCollection": "users",
+          "type": "many-to-one"
+        },
+        "donorId": {
+          "foreignField": "donorId",
+          "foreignCollection": "donor",
+          "type": "many-to-one"
+        },
+        "fundraiserId": {
+          "foreignField": "fundraiserId",
+          "foreignCollection": "fundraisers",
+          "type": "many-to-one"
+        }
+      }
+    },
+    "fundraisers": {
+      "name": "fundraisers",
+      "schema": {
+        "$ref": "#/definitions/fundraisers",
+        "definitions": {
+          "fundraisers": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "startDate": {
+                "type": "string",
+                "minLength": 2
+              },
+              "endDate": {
+                "type": "string",
+                "minLength": 2
+              },
+              "goal": {
+                "type": "number",
+                "minimum": 1
+              },
+              "raised": {
+                "default": 0,
+                "type": "number"
+              },
+              "currency_type": {
+                "default": "INR",
+                "type": "string"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "customReason": {
+                "type": "string"
+              },
+              "story": {
+                "type": "string",
+                "minLength": 1
+              },
+              "projectId": {
+                "type": "string"
+              },
+              "donorUpdatesVisible": {
+                "default": true,
+                "type": "boolean"
+              },
+              "bannerImage": {
+                "type": "string",
+                "format": "uri"
+              },
+              "verixImageUrl": {
+                "type": "string",
+                "format": "uri"
+              },
+              "createdBy": {
+                "type": "string"
+              },
+              "status": {
+                "default": "active",
+                "type": "string",
+                "enum": [
+                  "active",
+                  "completed",
+                  "cancelled",
+                  "upcoming"
+                ]
+              },
+              "convertedAmounts": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {}
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              },
+              "completedAt": {
+                "type": "string"
+              },
+              "institution": {
+                "type": "string"
+              },
+              "studentName": {
+                "type": "string",
+                "minLength": 1
+              },
+              "studentProfile": {
+                "type": "string"
+              },
+              "studentBio": {
+                "type": "string"
+              },
+              "share_description": {
+                "type": "string"
+              },
+              "shareUrl": {
+                "type": "string"
+              },
+              "user_copy": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {}
+              }
+            },
+            "required": [
+              "title",
+              "startDate",
+              "endDate",
+              "goal",
+              "raised",
+              "reason",
+              "story",
+              "projectId",
+              "donorUpdatesVisible",
+              "createdBy",
+              "status",
+              "createdAt",
+              "updatedAt",
+              "studentName"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "pinecone": {
+        "isVectorized": false
+      },
+      "relationships": {
+        "projectId": {
+          "foreignField": "projectId",
+          "foreignCollection": "projects",
+          "type": "many-to-one"
+        },
+        "userId": {
+          "foreignField": "userId",
+          "foreignCollection": "users",
+          "type": "many-to-one"
+        }
+      }
+    },
+    "users": {
+      "name": "users",
+      "schema": {
+        "$ref": "#/definitions/users",
+        "definitions": {
+          "users": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "sub": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+              },
+              "email_verified": {
+                "type": "boolean"
+              },
+              "name": {
+                "type": "string"
+              },
+              "nickname": {
+                "type": "string"
+              },
+              "picture": {
+                "type": "string",
+                "format": "uri"
+              },
+              "updated_at": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+              },
+              "given_name": {
+                "type": "string"
+              },
+              "family_name": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "role": {
+                "default": "user",
+                "type": "string",
+                "enum": [
+                  "admin",
+                  "user",
+                  "fundraiser",
+                  "ca",
+                  "super_admin"
+                ]
+              },
+              "isAdminMode": {
+                "type": "boolean"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "dial_code": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "email",
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "pinecone": {
+        "isVectorized": false
+      },
+      "relationships": {}
+    },
+    "donor": {
+      "name": "donor",
+      "schema": {
+        "$ref": "#/definitions/donor",
+        "definitions": {
+          "donor": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "donationIds": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "first_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "last_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+              },
+              "phone": {
+                "type": "string",
+                "minLength": 10
+              },
+              "isAuthorisedUser": {
+                "default": false,
+                "type": "boolean"
+              },
+              "createdBy": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "one_time_donor": {
+                "default": "no",
+                "type": "string",
+                "enum": [
+                  "yes",
+                  "no"
+                ]
+              },
+              "dial_code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "default": "active",
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive"
+                ]
+              }
+            },
+            "required": [
+              "donationIds",
+              "first_name",
+              "last_name",
+              "name",
+              "email",
+              "isAuthorisedUser"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "pinecone": {
+        "isVectorized": false
+      },
+      "relationships": {}
+    },
+    "ambassadors": {
+      "name": "ambassadors",
+      "schema": {
+        "$ref": "#/definitions/ambassadors",
+        "definitions": {
+          "ambassadors": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "full_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "email": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 254,
+                "format": "email",
+                "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+              },
+              "organization": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string",
+                "minLength": 1
+              },
+              "country": {
+                "type": "string",
+                "minLength": 1
+              },
+              "phone_number": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^\\+\\d{1,4}\\d{6,14}$"
+              },
+              "contribution_preference": {
+                "type": "string"
+              },
+              "motivation": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "status": {
+                "default": "pending",
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "approved",
+                  "rejected"
+                ]
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "full_name",
+              "email",
+              "city",
+              "country",
+              "phone_number",
+              "motivation",
+              "status",
+              "createdAt",
+              "updatedAt"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "pinecone": {
+        "isVectorized": false
+      },
+      "relationships": {}
+    },
+    "update": {
+      "name": "update",
+      "schema": {
+        "$ref": "#/definitions/update",
+        "definitions": {
+          "update": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "string",
+                "minLength": 1
+              },
+              "createdBy": {
+                "type": "string",
+                "minLength": 6
+              },
+              "targetType": {},
+              "targetId": {
+                "type": "string",
+                "minLength": 6
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              },
+              "donarId": {
+                "type": "string",
+                "minLength": 6
+              }
+            },
+            "required": [
+              "content",
+              "createdBy",
+              "targetType",
+              "targetId",
+              "createdAt"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "pinecone": {
+        "isVectorized": true,
+        "namespace": "updates",
+        "vectorizedFields": [
+          "content",
+          "title"
+        ]
+      },
+      "relationships": {
+        "projectId": {
+          "foreignField": "projectId",
+          "foreignCollection": "projects",
+          "type": "many-to-one"
+        }
+      }
+    },
+    "newsletter": {
+      "name": "newsletter",
+      "schema": {
+        "$ref": "#/definitions/newsletter",
+        "definitions": {
+          "newsletter": {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+              },
+              "createdAt": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "email"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "pinecone": {
+        "isVectorized": false
+      },
+      "relationships": {}
+    }
+  }
+}
