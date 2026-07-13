@@ -248,10 +248,11 @@ export const responderNode = async (
 
   const userData = state.metadata?.userData;
   const userProfile = userData
-    ? `\n\n## Authenticated User Profile\nYou are currently speaking with:\n- Name: ${userData.firstName || ""} ${userData.lastName || ""}`.trim() +
+    ? `\n\n## Authenticated User Profile\nYou are currently speaking with:\n- Name: ${userData.given_name || userData.name || ""} ${userData.family_name || ""}`.trim() +
       `\n- Email: ${userData.email || "Unknown"}` +
+      `\n- User ID (Database _id): ${userData._id || "Unknown"}` +
       `\n- Role: ${userData.role || "Team Member"}` +
-      `\n\nAlways acknowledge them by their name and role if they ask who they are.`
+      `\n\nAlways acknowledge them by their name and role if they ask who they are. Use their User ID to filter database queries for records belonging to them.`
     : "";
 
   let dynamicSchemaContext = "";
@@ -264,7 +265,7 @@ Use this to formulate dynamic MongoDB aggregations or determine which Pinecone i
 ${JSON.stringify(schemas, null, 2)}`;
     }
   } catch (err) {
-    console.error("Could not append schema context");
+    logger.error(`Schema context unavailable for responder: ${err}`)
   }
 
   const systemPrompt = SYSTEM_PROMPT + context + userProfile + dynamicSchemaContext;

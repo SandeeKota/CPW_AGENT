@@ -4,6 +4,7 @@ import { HealthController } from "../../controllers/v1/health.controller";
 import { PineconeController } from "../../controllers/v1/pinecone.controller";
 import { AuthMiddlewere } from "../../middlewere/v1/authCheck.middlewere";
 import { agentRateLimiter } from "../../middleware/rateLimiter";
+import logger from "../../utils/logger";
 
 const router = express.Router();
 
@@ -11,9 +12,7 @@ const router = express.Router();
 router.use((req, res, next) => {
   // Avoid logging GET / (root) requests to reduce noise
   if (!(req.method === "GET" && req.originalUrl === "/")) {
-    console.info(
-      `[AGENT API HIT] ${req.method} ${req.originalUrl} from IP: ${req.ip}`,
-    );
+    logger.info(`${req.method} ${req.originalUrl} | ip: ${req.ip}`);
   }
   next();
 });

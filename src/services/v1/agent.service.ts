@@ -172,9 +172,9 @@ export const AgentService = {
     }
 
     try {
-      // Run through DeepAgent graph with streaming
+      // Run through DeepAgent graph with true token-level streaming
       const graph = createDeepAgentGraph();
-      const stream = await graph.stream({
+      const stream = await graph.streamEvents({
         messages: [
           ...existingMessages.map(docToBaseMessage),
           new HumanMessage(message),
@@ -187,40 +187,40 @@ export const AgentService = {
           userData,
           conversationId: resolvedConversationId,
         },
-      }, { configurable: { thread_id: resolvedConversationId } });
+      }, { version: "v2", configurable: { thread_id: resolvedConversationId } });
 
       let fullResponse = "";
       let toolCalls: any[] = [];
       let tokenIndex = 0;
 
-      for await (const chunk of stream) {
-        console.log("STREAM CHUNK:", JSON.stringify(chunk, null, 2));
-        // Extract content from each graph node output
-        const nodeOutputs = Object.values(chunk);
-        for (const output of nodeOutputs) {
-          const outputMessages = (output as any)?.messages;
-          if (outputMessages && Array.isArray(outputMessages)) {
-            for (const msg of outputMessages) {
-              // AIMessage instances use _getType() === "ai", not msg.role === "assistant"
-              if (msg._getType?.() === "ai" && msg.content) {
-                const content =
-                  typeof msg.content === "string" ? msg.content : "";
-                // Split into word tokens for streaming
-                const words = content.split(/(\s+)/);
-                for (const word of words) {
-                  if (word) {
-                    fullResponse += word;
-                    res.write(
-                      `event: token\ndata: ${JSON.stringify({ token: word, index: tokenIndex++ })}\n\n`,
-                    );
-                  }
-                }
-              }
-
-              // LangChain AIMessage uses snake_case tool_calls (not toolCalls)
-              if (msg.tool_calls?.length) {
-                toolCalls.push(...msg.tool_calls);
-              }
+      for await (const event of stream) {
+        // Stream actual LLM tokens as they are generated
+        if (event.event === "on_chat_model_stream") {
+          const chunk = event.data.chunk;
+          if (chunk && chunk.content) {
+            const token = typeof chunk.content === "string" ? chunk.content : "";
+            if (token) {
+              fullResponse += token;
+              res.write(
+                `event: token\ndata: ${JSON.stringify({ token, index: tokenIndex++ })}\n\n`,
+              );
+            }
+          }
+        }
+        
+        // Capture tool calls when the model finishes its generation
+        if (event.event === "on_chat_model_end") {
+          const output = event.data.output;
+          if (output) {
+            if (output.tool_calls && output.tool_calls.length > 0) {
+              toolCalls.push(...output.tool_calls);
+            }
+            // Safety net: if model didn't stream but returned text content, capture it
+            if (!fullResponse && output.content && typeof output.content === "string") {
+              fullResponse = output.content;
+              res.write(
+                `event: token\ndata: ${JSON.stringify({ token: fullResponse, index: tokenIndex++ })}\n\n`,
+              );
             }
           }
         }

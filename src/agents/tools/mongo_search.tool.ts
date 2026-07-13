@@ -95,33 +95,42 @@ STRICT RULES:
 - NEVER use this tool to create, update, or delete any data. It is physically blocked.
 - Use 'aggregate' with $lookup for cross-collection joins (e.g. donations by fundraiser, donors of a campaign).
 - Use relationships: projects ↔ fundraisers (projectId), donations ↔ projects (projectId), donations ↔ users (userId), donations ↔ donors (donorId), fundraisers ↔ users (userId).
-- Always apply a reasonable limit (default: 10, max: 50).
+- Always apply a reasonable limit (default: 10, max: 15). NEVER use limit: 1 when fetching a list of items.
+- Always state the total count found. If there are more items remaining, append a suggested question to ask the user if they want to see the next batch (e.g. "- Show the next 10 results (11-20)"). Use the 'skip' parameter to fetch the next batch.
 - Prefer aggregate with $lookup when the user asks cross-collection questions.`,
   schema: z.object({
     collection: z.string().describe("The MongoDB collection to query (e.g. 'projects', 'fundraisers', 'donations', 'users', 'donor', 'ambassadors')"),
     operation: z
       .enum(["find", "aggregate"])
+      .nullish()
       .default("find")
       .describe("'find' for simple filter queries, 'aggregate' for joins/grouping/complex pipelines"),
     query: z
       .any()
-      .optional()
+      .nullish()
       .describe("MongoDB filter object for 'find' operations. Example: { 'status': 'active' }"),
     pipeline: z
       .array(z.any())
-      .optional()
+      .nullish()
       .describe("MongoDB aggregation pipeline array. Use $lookup for joins. Example: [{ $match: {...} }, { $lookup: {...} }]"),
     sort: z
       .any()
-      .optional()
+      .nullish()
       .describe("MongoDB sort object for 'find' operations. Default: {'createdAt': -1} to show newest first. Example: { 'createdAt': -1 }"),
     limit: z
       .number()
-      .max(50)
+      .max(15)
+      .nullish()
       .default(10)
-      .describe("Max number of results to return (default 10, max 50)"),
+      .describe("Max number of results to return (default 10, max 15). IMPORTANT: Do not set to 1 unless the user explicitly asks for a single item!"),
+    skip: z
+      .number()
+      .min(0)
+      .nullish()
+      .default(0)
+      .describe("Number of results to skip (for pagination). Use this to fetch the next batch of results."),
   }),
-  func: async ({ collection, operation, query, pipeline, sort, limit }) => {
+  func: async ({ collection, operation, query, pipeline, sort, limit, skip }) => {
     try {
       logger.info(`Mongo ${operation} on '${collection}'`);
 
@@ -145,6 +154,9 @@ STRICT RULES:
         const processedPipeline = convertIds(trimmedPipeline);
 
         // Always cap results to prevent memory issues
+        if (skip && skip > 0 && !processedPipeline.some((stage: any) => stage.$skip)) {
+          processedPipeline.push({ $skip: skip });
+        }
         if (!processedPipeline.some((stage: any) => stage.$limit)) {
           processedPipeline.push({ $limit: limit });
         }
@@ -166,6 +178,8 @@ STRICT RULES:
             collection,
             operation,
             count: cleanedResults.length,
+            skip: skip || 0,
+            limit,
             results: cleanedResults,
           },
           null,
@@ -175,7 +189,7 @@ STRICT RULES:
         const processedQuery = convertIds(trimmedQuery || {});
         const processedSort = sort || { createdAt: -1 };
         const totalCount = await col.countDocuments(processedQuery);
-        const rawResults = await col.find(processedQuery).sort(processedSort).limit(limit).toArray();
+        const rawResults = await col.find(processedQuery).sort(processedSort).skip(skip || 0).limit(limit).toArray();
         
         // Security: strip sensitive fields
         const cleanedResults = rawResults.map((doc) => {
@@ -193,6 +207,7 @@ STRICT RULES:
             operation,
             totalMatchingCount: totalCount,
             retrievedCount: cleanedResults.length,
+            skip: skip || 0,
             limit,
             results: cleanedResults,
           },

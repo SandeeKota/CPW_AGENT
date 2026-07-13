@@ -68,20 +68,20 @@ export const createDeepAgentGraph = () => {
     // Tool Node routing for subagents
     .addConditionalEdges("mongo_search", (state: DeepAgentStateType) => {
       const lastMsg = state.messages[state.messages.length - 1] as any;
-      if (lastMsg.tool_calls?.length) return "tools";
+      if (lastMsg.tool_calls?.length || lastMsg.invalid_tool_calls?.length) return "tools";
       return "responder";
     })
     
     .addConditionalEdges("pinecone_search", (state: DeepAgentStateType) => {
       const lastMsg = state.messages[state.messages.length - 1] as any;
-      if (lastMsg.tool_calls?.length) return "tools";
+      if (lastMsg.tool_calls?.length || lastMsg.invalid_tool_calls?.length) return "tools";
       return "responder";
     })
 
     // The responder might use tools or finish
     .addConditionalEdges("responder", (state: DeepAgentStateType) => {
       const lastMsg = state.messages[state.messages.length - 1] as any;
-      if (lastMsg.tool_calls?.length) return "tools";
+      if (lastMsg.tool_calls?.length || lastMsg.invalid_tool_calls?.length) return "tools";
       return "__end__";
     })
 

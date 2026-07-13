@@ -9,42 +9,27 @@ import { mongoDbConnection } from "./middlewere/v1/mongoDbConnection";
 import indexV1 from "./routes/v1/router";
 import { patchAsyncRoutes } from "./middlewere/v1/asyncRouteWrapper";
 import logger from "./utils/logger";
+import { runStartupChecks } from "./utils/startupCheck";
 
 // ==========================================
 // Unhandled Error Handlers
 // ==========================================
 process.on("unhandledRejection", (reason: any) => {
-  console.error("=======================================");
-  console.error("❌ UNHANDLED REJECTION");
-  console.error("🕒 Time:", new Date().toISOString());
-  console.error("📌 Reason:", reason);
-  console.error("📌 Stack:", reason?.stack);
-  console.error("=======================================");
+  logger.error(`UNHANDLED REJECTION | reason: ${reason?.message || reason} | stack: ${reason?.stack}`);
 });
 
 process.on("uncaughtException", (err: any) => {
-  console.error("=======================================");
-  console.error("❌ UNCAUGHT EXCEPTION");
-  console.error("🕒 Time:", new Date().toISOString());
-  console.error("📌 Error:", err.message);
-  console.error("📌 Stack:", err.stack);
-  console.error("=======================================");
+  logger.error(`UNCAUGHT EXCEPTION | message: ${err.message} | stack: ${err.stack}`);
   setTimeout(() => process.exit(1), 500);
 });
 
 process.on("SIGINT", () => {
-  console.log("=======================================");
-  console.log("🛑 Agent Server is shutting down (SIGINT)");
-  console.log("🕒 Time:", new Date().toISOString());
-  console.log("=======================================");
+  logger.info("Agent Server shutting down (SIGINT)");
   process.exit(0);
 });
 
 process.on("SIGTERM", () => {
-  console.log("=======================================");
-  console.log("🛑 Agent Server terminated (SIGTERM)");
-  console.log("🕒 Time:", new Date().toISOString());
-  console.log("=======================================");
+  logger.info("Agent Server terminated (SIGTERM)");
   process.exit(0);
 });
 
@@ -93,12 +78,7 @@ patchAsyncRoutes(app as any);
 // Global Error Handler
 // ==========================================
 app.use((err: any, req: any, res: any, next: any) => {
-  console.error("❌ API ERROR");
-  console.error("🕒 Time:", new Date().toISOString());
-  console.error("📌 Method:", req.method);
-  console.error("📌 URL:", req.originalUrl);
-  console.error("📌 Message:", err.message);
-  console.error("📌 Stack:", err.stack);
+  logger.error(`API ERROR | ${req.method} ${req.originalUrl} | ${err.message}`);
 
   const statusCode = err.status || err.statusCode || 500;
   const message =
@@ -116,10 +96,8 @@ app.use((err: any, req: any, res: any, next: any) => {
 // Start Server
 // ==========================================
 app.listen(PORT, () => {
-  console.log("=======================================");
-  console.log(`🤖 CPW Agent Server STARTED`);
-  console.log(`📍 URL: http://localhost:${PORT}`);
-  console.log(`📍 API: http://localhost:${PORT}/api/v1`);
-  console.log(`🕒 Time: ${new Date().toISOString()}`);
-  console.log("=======================================");
+  logger.info(`CPW Agent Server started | port: ${PORT} | env: ${process.env.NODE_ENV || "development"}`);
+  // Validate API keys immediately after startup
+  runStartupChecks();
 });
+

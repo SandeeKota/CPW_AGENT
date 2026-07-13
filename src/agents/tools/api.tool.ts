@@ -16,7 +16,7 @@ export const apiTool: any = new DynamicStructuredTool({
       .describe("The API endpoint path (e.g., /api/v1/projects)"),
     method: z
       .enum(["GET", "POST", "PUT", "DELETE"])
-      .optional()
+      .nullish()
       .default("GET")
       .describe("HTTP method"),
     description: z

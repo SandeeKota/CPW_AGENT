@@ -14,7 +14,7 @@ export const planningTool: any = new DynamicStructuredTool({
     task: z.string().describe("The task or goal to plan for"),
     context: z
       .string()
-      .optional()
+      .nullish()
       .describe("Additional context or constraints for the plan"),
   }),
   func: async ({ task, context }) => {

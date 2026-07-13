@@ -8,13 +8,19 @@ import { apiTool } from "../tools/api.tool";
 
 // ==========================================
 // DeepAgent Configuration
+// LLM: Sarvam AI (OpenAI-compatible endpoint)
+// Embeddings: OpenAI (handled separately in pinecone.ts)
 // ==========================================
 export const getAgentModel = () => {
   return new ChatOpenAI({
-    model: config.OPENAI_MODEL,
+    model: config.sarvam.MODEL,
     temperature: 0.7,
-    openAIApiKey: config.OPENAI_API_KEY,
+    openAIApiKey: config.sarvam.API_KEY,
     maxTokens: 2048,
+    streaming: true,
+    configuration: {
+      baseURL: config.sarvam.BASE_URL,
+    },
   });
 };
 
@@ -37,5 +43,6 @@ export const agentConfig = {
   maxIterations: 10,
   maxTokens: 2048,
   temperature: 0.7,
-  model: config.OPENAI_MODEL,
+  model: config.sarvam.MODEL,
 };
+

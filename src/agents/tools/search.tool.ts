@@ -4,6 +4,7 @@ import { z } from "zod";
 import { getPineconeClient } from "../../utils/pinecone";
 import { PineconeStore } from "@langchain/pinecone";
 import { OpenAIEmbeddings } from "@langchain/openai";
+import { MongoClient, Db, ObjectId } from "mongodb";
 import config from "../../config/config";
 import logger from "../../utils/logger";
 
@@ -45,15 +46,17 @@ export const searchTool: any = new DynamicStructuredTool({
     query: z.string().describe("The semantic search query — be descriptive for best results"),
     namespace: z
       .string()
-      .optional()
+      .nullish()
       .describe("Pinecone namespace to scope the search: 'projects' or 'updates'. Leave empty to search all."),
     limit: z
       .number()
       .max(20)
+      .nullish()
       .default(5)
       .describe("Number of results to return (default 5, max 20)"),
   }),
   func: async ({ query, namespace, limit }) => {
+    let mongoClient: MongoClient | null = null;
     try {
       logger.info(`Performing vector search for: "${query}" in namespace: ${namespace || "all"} with limit: ${limit}`);
 
@@ -71,11 +74,43 @@ export const searchTool: any = new DynamicStructuredTool({
         }, null, 2);
       }
 
-      const results = docs.map((doc, idx) => ({
-        resultIndex: idx + 1,
-        content: doc.pageContent,
-        metadata: doc.metadata,
+      // Query MongoDB to enrich metadata
+      mongoClient = new MongoClient(config.MONGO_URI);
+      await mongoClient.connect();
+      const db = mongoClient.db(config.DB_NAME);
+
+      const results = await Promise.all(docs.map(async (doc, idx) => {
+        let enrichedMetadata = { ...doc.metadata };
+        
+        // Use doc_id and source_collection per our embedding logic
+        const docId = doc.metadata.doc_id;
+        const collectionName = doc.metadata.source_collection;
+        
+        if (docId && collectionName) {
+            try {
+                const collection = db.collection(collectionName);
+                const fullDoc = await collection.findOne({ _id: new ObjectId(docId) });
+                if (fullDoc) {
+                    // Strip sensitive fields
+                    delete fullDoc.password;
+                    delete fullDoc.token;
+                    delete fullDoc.refreshToken;
+                    delete fullDoc.secret;
+                    enrichedMetadata = { ...enrichedMetadata, fullData: fullDoc };
+                }
+            } catch (err) {
+                logger.error(`Error fetching full doc ${docId} from ${collectionName}: ${err}`);
+            }
+        }
+
+        return {
+          resultIndex: idx + 1,
+          content: doc.pageContent,
+          metadata: enrichedMetadata,
+        };
       }));
+
+      await mongoClient.close();
 
       return JSON.stringify({
         query,
@@ -85,6 +120,9 @@ export const searchTool: any = new DynamicStructuredTool({
       }, null, 2);
 
     } catch (error: any) {
+      if (mongoClient) {
+        await mongoClient.close();
+      }
       logger.error(`Search tool failed: ${error.message}`);
       return JSON.stringify({
         error: "Failed to search the knowledge base",
