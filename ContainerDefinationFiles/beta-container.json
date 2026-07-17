@@ -1,0 +1,41 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "cpw-dashboard",
+      "image": "742846646263.dkr.ecr.ap-south-1.amazonaws.com/beta-cpw-dashboard:${IMAGE_TAG}",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "protocol": "tcp"
+        }
+      ],
+      "secrets": [],
+      "environment": [],
+      "readonlyRootFilesystem": false,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/cpw-dashboard/beta",
+          "awslogs-region": "ap-south-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "mountPoints": [],
+      "volumesFrom": []
+    }
+  ],
+  "family": "cpw-dashboard-beta",
+  "taskRoleArn": "arn:aws:iam::742846646263:role/beta-ecs-task-role",
+  "executionRoleArn": "arn:aws:iam::742846646263:role/beta-ecs-task-execution-role",
+  "networkMode": "awsvpc",
+  "placementConstraints": [],
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+    "operatingSystemFamily": "LINUX",
+    "cpuArchitecture": "X86_64"
+  }
+}

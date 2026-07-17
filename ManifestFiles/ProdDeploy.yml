@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "cpw-dashboard"
+  namespace: cpw-prod
+spec:
+  selector:
+    matchLabels:
+      app: "dashboard"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "dashboard"
+    spec:
+      containers:
+        - name: "dashboard"
+          imagePullPolicy: Always
+          image: thewayfarersprodacr.azurecr.io/cpw-dashboard:prod-${GITHUB_RUN_NUMBER}
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "200Mi"
+            limits:
+              cpu: "100m"
+              memory: "300Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+          env:
+            - name: NEXT_PUBLIC_CloudfrontS3
+              valueFrom:
+                configMapKeyRef:
+                  name: cpw-dashboard
+                  key: NEXT_PUBLIC_CloudfrontS3
+            - name: NEXT_PUBLIC_STRIPE_PUBLISHEBLE_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: cpw-dashboard
+                  key: NEXT_PUBLIC_STRIPE_PUBLISHEBLE_KEY
+            - name: NEXT_PUBLIC_RAZOREPAY_ORDER
+              valueFrom:
+                configMapKeyRef:
+                  name: cpw-dashboard
+                  key: NEXT_PUBLIC_RAZOREPAY_ORDER
+            - name: NEXT_PUBLIC_RAZOREPAY_SUBSCRIPTION
+              valueFrom:
+                configMapKeyRef:
+                  name: cpw-dashboard
+                  key: NEXT_PUBLIC_RAZOREPAY_SUBSCRIPTION
+            - name: NEXT_PUBLIC_COGNITO_USER_POOL_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: cpw-dashboard
+                  key: NEXT_PUBLIC_COGNITO_USER_POOL_CLIENT_ID
+            - name: NEXT_PUBLIC_COGNITO_USER_POOL_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: cpw-dashboard
+                  key: NEXT_PUBLIC_COGNITO_USER_POOL_ID
+            - name: NEXT_PUBLIC_BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: cpw-dashboard
+                  key: NEXT_PUBLIC_BACKEND_URL
+            - name: NEXT_PUBLIC_WEBSITE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: cpw-dashboard
+                  key: NEXT_PUBLIC_WEBSITE_URL
+            - name: NEXT_PUBLIC_DASHBOARD_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: cpw-dashboard
+                  key: NEXT_PUBLIC_DASHBOARD_URL

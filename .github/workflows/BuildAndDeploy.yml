@@ -1,0 +1,72 @@
+name: Build and Deploy
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+      - beta
+      - prod
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+env:
+  AWS_REGION: ap-south-1
+  AWS_ACCOUNT_ID: "742846646263"
+  CONTAINER_NAME: cpw-dashboard # using this variable for ECR Repository, Contianer Definition and Service
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  BuildandDeploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/GHADeploymentRole
+          role-session-name: samplerolesession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Construct environment variables
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          echo "ENVIRONMENT=$BRANCH_NAME"  >> $GITHUB_ENV
+          echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker build \
+            --build-arg ENV_TYPE=${{ env.ENVIRONMENT }} \
+            -t $ECR_REGISTRY/${{ env.ENVIRONMENT }}-$CONTAINER_NAME:${{ env.ENVIRONMENT }}-${{ env.SHORT_SHA }} .
+          docker push $ECR_REGISTRY/${{ env.ENVIRONMENT }}-$CONTAINER_NAME:${{ env.ENVIRONMENT }}-${{ env.SHORT_SHA }}
+          echo "IMAGE=$ECR_REGISTRY/${{ env.ENVIRONMENT }}-$CONTAINER_NAME:${{ env.ENVIRONMENT }}-${{ env.SHORT_SHA }}" >> $GITHUB_ENV
+
+      - name: Update container definition with Image TAG
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ContainerDefinationFiles/${{ env.ENVIRONMENT }}-container.json
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ env.IMAGE }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.CONTAINER_NAME }}-${{ env.ENVIRONMENT }}
+          cluster: ${{ env.ENVIRONMENT }}-cluster
+          wait-for-service-stability: false

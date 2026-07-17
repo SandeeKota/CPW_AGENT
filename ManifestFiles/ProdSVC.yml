@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "dashboard"
+  namespace: cpw-prod
+spec:
+  selector:
+    app: "dashboard"
+  type: NodePort
+  ports:
+    - port: 2222
+      protocol: TCP
+      targetPort: 3000

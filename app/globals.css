@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --ag-font-family: var(--font-signika-negative), sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 185 56% 30%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 18 65% 52%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 195 50% 18%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 185 56% 45%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 18 65% 60%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 195 50% 30%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground !font-Lato !overflow-hidden;
+  }
+}
+
+.custom-calendar-wrapper .react-calendar__tile {
+  border-radius: 8px;
+  color: #000;
+  font-weight: 400;
+}
+
+.custom-calendar-wrapper .react-calendar__tile--active {
+  background-color: #227077;
+  color: #000;
+}
+
+.custom-calendar-wrapper .react-calendar__tile:enabled:hover {
+  background-color: #227077;
+  color: #000;
+}
+
+.custom-calendar-wrapper .react-calendar {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.custom-calendar-wrapper
+  .react-calendar
+  .react-calendar__month-view__weekdays
+  abbr {
+  font-weight: 500;
+  text-decoration: none;
+  color: #000;
+  text-decoration: none;
+  /* remove underline */
+}
+
+.custom-calendar-wrapper
+  .react-calendar
+  .react-calendar__navigation
+  button:hover {
+  background-color: #227077;
+}
+
+.custom-calendar-wrapper .react-calendar .react-calendar__tile--now {
+  background-color: #227077;
+  color: #000;
+}
+
+.custom-calendar-wrapper .react-calendar .react-calendar__tile--now:hover {
+  background-color: #227077;
+  color: #000;
+}
+
+.custom-calendar-wrapper .react-calendar .react-calendar__navigation button {
+  font-size: 16px;
+  font-weight: 500;
+  background: transparent;
+  background-color: transparent;
+  border-radius: 2px;
+}
+
+.custom-calendar-wrapper
+  .react-calendar
+  .react-calendar__navigation
+  .react-calendar__navigation__label {
+  font-size: 16px;
+  font-weight: 500;
+  background: transparent;
+  background-color: transparent;
+}
+
+.custom-calendar-wrapper .react-calendar .react-calendar__navigation__arrow {
+  background: transparent;
+  background-color: transparent;
+}
+
+.custom-calendar-wrapper
+  .react-calendar
+  .react-calendar__navigation__arrow:disabled {
+  opacity: 0.5;
+}
+
+.ag-root-wrapper,
+.ag-root-wrapper * {
+  font-family: var(--font-signika-negative), sans-serif;
+}
+
+/* globals.css */
+
+.custom-scrollbar-text-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar-text-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar-text-area::-webkit-scrollbar-thumb {
+  background: #cbd5e1; /* slate-300 */
+  border-radius: 9999px;
+}
+
+.custom-scrollbar-text-area::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8; /* slate-400 */
+}
+
+/* Firefox */
+.custom-scrollbar-text-area {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}

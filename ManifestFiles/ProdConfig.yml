@@ -1,0 +1,17 @@
+apiVersion: v1
+data:
+  NEXT_PUBLIC_CloudfrontS3: "https://cpw-prod-app.s3.ap-south-1.amazonaws.com/"
+  NEXT_PUBLIC_STRIPE_PUBLISHEBLE_KEY: "pk_live_51HKubUGnovh7BfG52fB8OkqM6uFDbXcEAHhauDTC77zin9jcp4yRj4UOmzBTbJ2Mso0CMUmFd3lHrGe4Sc3aEFr300bLYQrL2f"
+  NEXT_PUBLIC_RAZOREPAY_ORDER: "/v1/payments/razorpay/create-order"
+  NEXT_PUBLIC_RAZOREPAY_SUBSCRIPTION: "/v1/payments/razorpay/monthy-subscription"
+  NEXT_PUBLIC_COGNITO_USER_POOL_CLIENT_ID: "201im6eq5t7ubrmg9qufftgip3"
+  NEXT_PUBLIC_COGNITO_USER_POOL_ID: "ap-south-1_ftfmDTzYI"
+  NEXT_PUBLIC_BACKEND_URL: "https://backend.communitypurewater.org"
+  NEXT_PUBLIC_WEBSITE_URL: "https://www.communitypurewater.org"
+  NEXT_PUBLIC_DASHBOARD_URL: "https://dashboard.communitypurewater.org"
+kind: ConfigMap
+metadata:
+  labels:
+    app: dashboard
+  name: cpw-dashboard
+  namespace: cpw-prod
